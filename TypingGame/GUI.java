@@ -1,7 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.*;
 
 public class GUI {
@@ -12,6 +10,10 @@ public class GUI {
         Dimension screenSize = tk.getScreenSize();
 
         JFrame frame = new JFrame();
+        frame.setUndecorated(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.getContentPane().setLayout(null);
+        frame.setResizable(false);
         
         if (screenx == 0 && screeny == 0) {
             frame.setSize(screenSize);
@@ -21,19 +23,25 @@ public class GUI {
             frame.setSize(new Dimension(screenx, screeny));
         }
 
-        JPanel panel = new JPanel();
+        JPanel panel = new JPanel(null);
+        panel.setSize(new Dimension(300, 600));
         JButton Button1 = new JButton("testing");
+        Button1.setBounds(panel.getWidth() / 2, panel.getHeight() / 2, 50, 25);
         panel.add(Button1);
+
         
         Button1.addActionListener(e -> frame.dispose());
 
-        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        gd.setFullScreenWindow(null);
-
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        // Components
+        panel.setBounds(frame.getContentPane().getWidth() / 2, frame.getContentPane().getHeight() / 2, frame.getWidth(), frame.getHeight());
         frame.add(panel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Make Frame fullscreen (hide taskbar)
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        gd.setFullScreenWindow(frame);
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
     }
 
