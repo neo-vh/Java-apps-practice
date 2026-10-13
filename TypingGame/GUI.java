@@ -23,18 +23,24 @@ public class GUI {
             frame.setSize(new Dimension(screenx, screeny));
         }
 
-        JPanel panel = new JPanel(null);
-        panel.setSize(new Dimension(300, 600));
-        JButton Button1 = new JButton("testing");
-        Button1.setBounds(panel.getWidth() / 2, panel.getHeight() / 2, 50, 25);
-        panel.add(Button1);
+        // MenuBar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Options");
+        JMenuItem close = new JMenuItem("Close");
+        menu.add(close);
+        menuBar.add(menu);
 
-        
-        Button1.addActionListener(e -> frame.dispose());
+        close.addActionListener(e -> frame.dispose());
+
+        // text display
+        JPanel textDisplay = new JPanel();
+        JTextField text = new JTextField("Test", 20);
+        textDisplay.setBounds(frame.getWidth() / 2, frame.getHeight() / 2, 250, 50);
+        textDisplay.add(text);
 
         // Components
-        panel.setBounds(frame.getContentPane().getWidth() / 2, frame.getContentPane().getHeight() / 2, frame.getWidth(), frame.getHeight());
-        frame.add(panel);
+        frame.setJMenuBar(menuBar);
+        frame.add(textDisplay);
 
         // Make Frame fullscreen (hide taskbar)
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
