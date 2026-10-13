@@ -35,7 +35,11 @@ public class GUI {
         // text display
         JPanel textDisplay = new JPanel();
         JTextField text = new JTextField("Test", 20);
-        textDisplay.setBounds(frame.getWidth() / 2, frame.getHeight() / 2, 250, 50);
+
+        int midx = (1820 + 0) / 2; // max visible x 1820
+        int midy = (1030 + 0) / 2; // max visible y 1030
+
+        textDisplay.setBounds(midx, midy, 250, 20);
         textDisplay.add(text);
 
         // Components
@@ -48,6 +52,8 @@ public class GUI {
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+        System.out.println(frame.getWidth() + " + " + frame.getHeight());
 
     }
 
