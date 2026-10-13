@@ -25,7 +25,7 @@ public class prompts {
             result = String.format("%s %s", result, possibleWords[r.nextInt(possibleWords.length)]);
         }
 
-        return result;
+        return result.strip();
     }
 
     public static String randomLetters(int itemLen, int totalItems) {
@@ -42,13 +42,7 @@ public class prompts {
             result = String.format("%s %s ", result, item);
         }
 
-        return result;
-    }
-
-    public static void main(String[] args) {
-        System.out.println(randomWords(10).strip());
-
-        System.out.println(randomLetters(5, 5).strip());
+        return result.strip();
     }
 
 }
