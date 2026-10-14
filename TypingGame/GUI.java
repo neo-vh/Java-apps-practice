@@ -90,14 +90,21 @@ public class GUI {
             }
         });
 
-        //label.setBounds(
-        //   (panel.getWidth() - 200) / 2,
-        //    (panel.getHeight() - 100) / 2,
-        //    200, 100
-        //);
+        frame.setBackground(new Color(230, 240, 255));
 
-        panel.add(textPane);
-        frame.add(tip);
+
+        // Nie die shit geskryfie maar ek nie lus om dit te probeer uitfigurie
+        GridBagConstraints textConstraints = new GridBagConstraints();
+        textConstraints.gridx = 0;
+        textConstraints.gridy = 0;
+        panel.add(textPane, textConstraints);
+
+        GridBagConstraints tipConstraints = new GridBagConstraints();
+        tipConstraints.gridx = 0;
+        tipConstraints.gridy = 1;
+        tipConstraints.insets = new Insets(16, 0, 0, 0);
+        panel.add(tip, tipConstraints);
+
         frame.add(panel);
 
         System.out.println(String.format("%d;%d", panel.getHeight(), panel.getWidth()));
