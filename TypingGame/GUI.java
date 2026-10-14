@@ -46,7 +46,7 @@ public class GUI {
         textPane.setEditable(false);
         textPane.setFocusable(false);
         textPane.setOpaque(false);
-        textPane.setFont(new Font("Arial", Font.PLAIN, 24));
+        textPane.setFont(new Font("Consolas", Font.PLAIN, 24));
         textPane.setForeground(Color.BLACK);
 
         JLabel tip = new JLabel("Type the prompt shown Exactly");

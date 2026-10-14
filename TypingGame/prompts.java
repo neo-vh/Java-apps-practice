@@ -34,12 +34,12 @@ public class prompts {
 
         String result = new String();
 
-        for (int n = 0; n <= totalItems; n++) {
+        for (int n = 0; n < totalItems; n++) {
             String item = new String();
-            for (int i = 0; i <= itemLen; i++) {
+            for (int i = 0; i < itemLen; i++) {
                 item = item + possibleLetters[r.nextInt(possibleLetters.length)];
             }
-            result = String.format("%s %s ", result, item);
+            result = String.format("%s %s", result, item);
         }
 
         return result.strip();
