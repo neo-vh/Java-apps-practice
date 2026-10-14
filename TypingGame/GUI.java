@@ -3,6 +3,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import javax.swing.*;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 
 public class GUI {
@@ -23,27 +25,7 @@ public class GUI {
 
         int[] currentIndex = {0};
 
-        frame.addKeyListener(new KeyAdapter() {
-            @Override 
-            public void keyTyped(KeyEvent e) {
-                if (currentIndex[0] >= targetString.length()) {
-                    targetString = prompts.randomLetters(4, 4);
-                    return;
-                }
-                char typed = e.getKeyChar();
-                char expected = targetString.charAt(currentIndex[0]);
-
-                if (typed == expected) {
-                    currentIndex[0]++;
-
-                    if (currentIndex[0] >= targetString.length()) {
-                        System.out.println("target completed!!");
-                    }
-                }
-            }
-        });
-
-        JMenuBar menuBar = new JMenuBar();
+                JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Options");
         menuBar.add(menu);
         JMenuItem close = new JMenuItem("Close");
@@ -56,8 +38,16 @@ public class GUI {
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setBackground(Color.GRAY);
 
-        JLabel label = new JLabel(targetString);
-        label.setFont(new Font("Arial", Font.PLAIN, 24));
+
+        JTextPane textPane = new JTextPane();
+        textPane.setText(targetString);
+        textPane.setEditable(false);
+        textPane.setFocusable(false);
+        textPane.setOpaque(false);
+        textPane.setFont(new Font("Arial", Font.PLAIN, 24));
+        textPane.setForeground(Color.BLACK);
+
+        JLabel tip = new JLabel("Type the prompt shown Exactly");
 
         panel.setBounds(
             (frame.getWidth() - 600) / 2,
@@ -65,17 +55,52 @@ public class GUI {
             600, 400
         );
 
+        frame.addKeyListener(new KeyAdapter() {
+            @Override 
+            public void keyTyped(KeyEvent e) {
+                
+                char typed = e.getKeyChar();
+                char expected = targetString.charAt(currentIndex[0]);
+
+                SimpleAttributeSet incorrectStyle = new SimpleAttributeSet();
+                StyleConstants.setForeground(incorrectStyle, new Color(128, 0, 0));
+                StyleConstants.setBackground(incorrectStyle, new Color(240, 190, 190));
+
+                if (typed != expected) {
+                    textPane.getStyledDocument().setCharacterAttributes(
+                        currentIndex[0], 1, incorrectStyle, false);
+                    return;
+                }
+
+                SimpleAttributeSet correctStyle = new SimpleAttributeSet();
+                StyleConstants.setForeground(correctStyle, new Color(0, 128, 0));
+                StyleConstants.setBackground(correctStyle, new Color(190, 240, 190));
+
+                textPane.getStyledDocument().setCharacterAttributes(
+                    currentIndex[0], 1, correctStyle, false
+                );
+
+                currentIndex[0]++;
+
+                if (currentIndex[0] >= targetString.length()) {
+                    targetString = prompts.randomLetters(4, 4);
+                    textPane.setText(targetString);
+                    currentIndex[0] = 0;
+                }
+            }
+        });
+
         //label.setBounds(
         //   (panel.getWidth() - 200) / 2,
         //    (panel.getHeight() - 100) / 2,
         //    200, 100
         //);
-        label.setForeground(Color.BLACK);
 
-        panel.add(label);
+        panel.add(textPane);
+        frame.add(tip);
         frame.add(panel);
 
-        System.out.println(String.format("%s;%s", panel.getHeight(), panel.getWidth()));
+        System.out.println(String.format("%d;%d", panel.getHeight(), panel.getWidth()));
 
         frame.setVisible(true);
         frame.requestFocusInWindow();
