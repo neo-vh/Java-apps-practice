@@ -24,8 +24,10 @@ public class GUI {
         frame.setUndecorated(true);
 
         int[] currentIndex = {0};
+        int[] totalTyped = {0};
+        long[] startTime = {0};
 
-                JMenuBar menuBar = new JMenuBar();
+        JMenuBar menuBar = new JMenuBar();
         JMenu menu = new JMenu("Options");
         menuBar.add(menu);
         JMenuItem close = new JMenuItem("Close");
@@ -54,6 +56,7 @@ public class GUI {
             (frame.getHeight() - 400) / 2,
             600, 400
         );
+        
 
         frame.addKeyListener(new KeyAdapter() {
             @Override 
@@ -69,6 +72,7 @@ public class GUI {
                 if (typed != expected) {
                     textPane.getStyledDocument().setCharacterAttributes(
                         currentIndex[0], 1, incorrectStyle, false);
+                    totalTyped[0]++;
                     return;
                 }
 
@@ -81,11 +85,22 @@ public class GUI {
                 );
 
                 currentIndex[0]++;
+                totalTyped[0]++;
 
                 if (currentIndex[0] >= targetString.length()) {
+
+                    long endTime = System.nanoTime();
+
+                    double elpasedMinutes = (endTime - startTime[0]) / 60_000_000_000.0;
+                    double wpm = (targetString.length() / 5.0) / elpasedMinutes;
+                    double accuracy = (targetString.length() * 100.0) / totalTyped[0];
+
                     targetString = prompts.randomLetters(4, 4);
                     textPane.setText(targetString);
                     currentIndex[0] = 0;
+                    tip.setText(String.format("WPM : %.1f | Accuracy %.1f%%", wpm, accuracy));
+                    startTime[0] = System.nanoTime();
+                    totalTyped[0] = 0;
                 }
             }
         });
@@ -110,6 +125,7 @@ public class GUI {
         System.out.println(String.format("%d;%d", panel.getHeight(), panel.getWidth()));
 
         frame.setVisible(true);
+        startTime[0] = System.nanoTime();
         frame.requestFocusInWindow();
 
         return frame;
