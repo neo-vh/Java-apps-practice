@@ -12,10 +12,11 @@ public class GUI {
     static Toolkit tk = Toolkit.getDefaultToolkit();
 
     // color scheme by copilot (ek nie lus vir aai nie ekkie doktor design nie)
-    private static final Color BACKGROUND = new Color(15, 23, 42);
-    private static final Color PANEL_BACKGROUND = new Color(30, 41, 59);
-    private static final Color TEXT_COLOR = new Color(226, 232, 240);
-    private static final Color MUTED_TEXT_COLOR = new Color(148, 163, 184);
+    private static Color BACKGROUND = new Color(15, 23, 42);
+    private static Color PANEL_BACKGROUND = new Color(30, 41, 59);
+    private static Color TEXT_COLOR = new Color(226, 232, 240);
+    private static Color MUTED_TEXT_COLOR = new Color(148, 163, 184);
+    private static Color BORDER_COLOR = new Color(51, 65, 85);
 
     enum PromptStyles {
         WORDS, LETTERS
@@ -71,6 +72,26 @@ public class GUI {
         style.setForeground(TEXT_COLOR);
         promptStyle.add(style);
 
+        JMenu windowStyles = new JMenu("Themes");
+        windowStyles.setBackground(BACKGROUND);
+        windowStyles.setForeground(TEXT_COLOR);
+        menuBar.add(windowStyles);
+
+        JMenuItem navyTheme = new JMenuItem("Navy");
+        navyTheme.setBackground(PANEL_BACKGROUND);
+        navyTheme.setForeground(TEXT_COLOR);
+        windowStyles.add(navyTheme);
+
+        JMenuItem lightTheme = new JMenuItem("Light");
+        lightTheme.setBackground(PANEL_BACKGROUND);
+        lightTheme.setForeground(TEXT_COLOR);
+        windowStyles.add(lightTheme);
+
+        JMenuItem darkTheme = new JMenuItem("Dark");
+        darkTheme.setBackground(PANEL_BACKGROUND);
+        darkTheme.setForeground(TEXT_COLOR);
+        windowStyles.add(darkTheme);
+
         style.addActionListener(e -> {
             
             if (states.currentStyle == PromptStyles.WORDS) {
@@ -104,6 +125,65 @@ public class GUI {
 
         JLabel tip = new JLabel("Type the prompt shown Exactly");
         tip.setForeground(MUTED_TEXT_COLOR);
+
+        Runnable applyTheme = () -> {
+            frame.getContentPane().setBackground(BACKGROUND);
+            frame.setBackground(BACKGROUND);
+            panel.setBackground(PANEL_BACKGROUND);
+            panel.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(BORDER_COLOR),
+                BorderFactory.createEmptyBorder(16, 16, 16, 16)
+            ));
+            textPane.setForeground(TEXT_COLOR);
+            tip.setForeground(MUTED_TEXT_COLOR);
+            menuBar.setBackground(BACKGROUND);
+            menuBar.setForeground(TEXT_COLOR);
+
+            for (JMenu themeMenu : new JMenu[] { menu, promptStyle, windowStyles }) {
+                themeMenu.setOpaque(true);
+                themeMenu.setBackground(BACKGROUND);
+                themeMenu.setForeground(TEXT_COLOR);
+                themeMenu.getPopupMenu().setOpaque(true);
+                themeMenu.getPopupMenu().setBackground(PANEL_BACKGROUND);
+            }
+
+            for (JMenuItem item : new JMenuItem[] {
+                close, style, navyTheme, lightTheme, darkTheme
+            }) {
+                item.setOpaque(true);
+                item.setBackground(PANEL_BACKGROUND);
+                item.setForeground(TEXT_COLOR);
+            }
+
+            frame.repaint();
+        };
+
+        darkTheme.addActionListener(e -> {
+            BACKGROUND = new Color(17, 19, 24);
+            PANEL_BACKGROUND = new Color(30, 35, 43);
+            TEXT_COLOR = new Color(230, 233, 238);
+            MUTED_TEXT_COLOR = new Color(155, 164, 178);
+            BORDER_COLOR = new Color(52, 60, 72);
+            applyTheme.run();
+        });
+
+        lightTheme.addActionListener(e -> {
+            BACKGROUND = new Color(243, 246, 251);
+            PANEL_BACKGROUND = new Color(255, 255, 255);
+            TEXT_COLOR = new Color(23, 32, 51);
+            MUTED_TEXT_COLOR = new Color(100, 116, 139);
+            BORDER_COLOR = new Color(213, 222, 234);
+            applyTheme.run();
+        });
+
+        navyTheme.addActionListener(e -> {
+            BACKGROUND = new Color(15, 23, 42);
+            PANEL_BACKGROUND = new Color(30, 41, 59);
+            TEXT_COLOR = new Color(226, 232, 240);
+            MUTED_TEXT_COLOR = new Color(148, 163, 184);
+            BORDER_COLOR = new Color(51, 65, 85);
+            applyTheme.run();
+        });
 
         panel.setBounds(
             (frame.getWidth() - 600) / 2,
