@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
-import javax.xml.crypto.dsig.SignatureProperties;
 
 public class GUI {
 
@@ -10,6 +9,7 @@ public class GUI {
     private static final Color BACKGROUND = new Color(30, 30, 30);
     private static final Color TEXT_COLOR = new Color(255, 255, 255);
     private static final Color PANEL_BACKGROUND = new Color(50, 50, 50);
+    private static final Color FIELD_COLOR = new Color(70, 70, 70);
     
     public static void renderGUI() {
 
@@ -50,23 +50,26 @@ public class GUI {
         mainFrame.setResizable(false);
         mainFrame.setAutoRequestFocus(true);
 
-        JPanel signUpPanel = new JPanel(new GridBagLayout());
+        JPanel signUpPanel = new JPanel(new GridBagLayout()); 
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(5,5,5);
+
+
         signUpPanel.setBounds(
             (signUp.getWidth() - 350) / 2,
-            (signUp.getHeight() - 200) / 2,
+            (signUp.getHeight() - 250) / 2,
             350, 250
         );
+
+        JTextField name = new JTextField();
+        
+        name.setForeground(TEXT_COLOR);
+        name.setBackground(FIELD_COLOR);
+        signUpPanel.add(name);
+
+
         signUpPanel.setBackground(PANEL_BACKGROUND);
 
-        JLabel signUpLabel = new JLabel("Sign Up");
-        signUpLabel.setForeground(TEXT_COLOR);
-        signUpLabel.setBounds(
-            (signUp.getWidth() - 100) / 2,
-            (signUp.getHeight() - 50),
-            100, 20
-        );
-
-        signUp.add(signUpLabel);
         signUp.add(signUpPanel);
         signUp.setVisible(true);
     }
