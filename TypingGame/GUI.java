@@ -218,6 +218,10 @@ public class GUI {
                 states.currentIndex++;
                 states.totalTyped++;
 
+                if (states.totalTyped == 1) {
+                    states.startTime = System.nanoTime();
+                }
+
                 if (states.currentIndex >= targetString.length()) {
 
                     long endTime = System.nanoTime();
@@ -259,7 +263,6 @@ public class GUI {
         System.out.println(String.format("%d;%d", panel.getHeight(), panel.getWidth()));
 
         frame.setVisible(true);
-        states.startTime = System.nanoTime();
         frame.requestFocusInWindow();
 
         return frame;
