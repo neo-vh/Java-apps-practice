@@ -101,21 +101,44 @@ public class GUI {
 
         signUpPanel.add(surname, c);
 
+        JTextField password = new JTextField(20);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        
+        password.setBackground(FIELD_COLOR);
+        password.setForeground(TEXT_COLOR);
+
+        password.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                password.setBackground(FIELD_COLOR);
+                password.setBorder(BorderFactory.createEmptyBorder());
+            }
+        });
+
+        signUpPanel.add(password, c);
+
+
         JButton confirm = new JButton("Confirm");
 
         c.gridx = 0;
-        c.gridy = 1;
-        c.fill = GridBagConstraints.NONE;
+        c.gridy = 2;
         c.gridheight = 2;
         c.gridwidth = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.CENTER;
 
         confirm.setBackground(FIELD_COLOR);
         confirm.setForeground(TEXT_COLOR);
         signUpPanel.add(confirm, c);
+        confirm.setBorder(BorderFactory.createLineBorder(FIELD_COLOR));
 
         confirm.addActionListener(e -> {
-            if (! name.getText().equals("") && ! surname.getText().equals("")) {
+            if (! name.getText().isBlank() && ! surname.getText().isBlank() && ! password.getText().isBlank()){
                 signUp.dispose();
                 mainFrame.setVisible(true);
             }
@@ -127,6 +150,10 @@ public class GUI {
                 if (surname.getText().isBlank()) {
                     surname.setBackground(INVALID);
                     surname.setBorder(BorderFactory.createLineBorder(INVALID_BORDER));
+                }
+                if (password.getText().isBlank()) {
+                    password.setBackground(INVALID);
+                    password.setBorder(BorderFactory.createLineBorder(INVALID_BORDER));
                 }
             }
         });
