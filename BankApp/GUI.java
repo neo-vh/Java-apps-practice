@@ -75,6 +75,7 @@ public class GUI {
         
         name.setForeground(TEXT_COLOR);
         name.setBackground(FIELD_COLOR);
+        name.setBorder(BorderFactory.createEmptyBorder());
 
         name.addFocusListener(new FocusAdapter() {
             @Override 
@@ -162,6 +163,7 @@ public class GUI {
         mainFrame.setResizable(false);
         mainFrame.setAutoRequestFocus(true);
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        mainFrame.getContentPane().setLayout(null);
 
         JMenuBar mainMenuBar = new JMenuBar();
         mainMenuBar.setBackground(BACKGROUND);
@@ -199,8 +201,25 @@ public class GUI {
 
         JMenuItem navyTheme = new JMenuItem("Navy");
         navyTheme.setBackground(PANEL_BACKGROUND);
-        pastelTheme.setForeground(TEXT_COLOR);
+        navyTheme.setForeground(TEXT_COLOR);
         themesMenu.add(navyTheme);
+
+        JMenuItem lightTheme = new JMenuItem("Light");
+        lightTheme.setBackground(PANEL_BACKGROUND);
+        lightTheme.setForeground(TEXT_COLOR);
+        themesMenu.add(lightTheme);
+
+        JPanel balancePanel = new JPanel(new GridBagLayout());
+        balancePanel.setBackground(PANEL_BACKGROUND);
+        balancePanel.setForeground(TEXT_COLOR);
+
+        balancePanel.setBounds(
+            (mainFrame.getWidth() - 400) / 2,
+            (mainFrame.getHeight() - 100) / 2,
+            400, 100
+        );
+
+        // main frame components should be placed above this comment
 
         Runnable applyTheme = () -> {
             mainFrame.getContentPane().setBackground(BACKGROUND);
@@ -216,6 +235,12 @@ public class GUI {
             darkTheme.setForeground(TEXT_COLOR);
             pastelTheme.setBackground(PANEL_BACKGROUND);
             pastelTheme.setForeground(TEXT_COLOR);
+            navyTheme.setBackground(PANEL_BACKGROUND);
+            navyTheme.setForeground(TEXT_COLOR);
+            lightTheme.setBackground(PANEL_BACKGROUND);
+            lightTheme.setForeground(TEXT_COLOR);
+            balancePanel.setBackground(PANEL_BACKGROUND);
+            balancePanel.setForeground(TEXT_COLOR);
         };
 
         darkTheme.addActionListener(e -> {
@@ -229,18 +254,37 @@ public class GUI {
         });
 
         pastelTheme.addActionListener(e -> {
-            BACKGROUND = new Color(250, 240, 245);
-            TEXT_COLOR = new Color(68, 52, 63);
-            PANEL_BACKGROUND = new Color(238, 218, 229);
-            FIELD_COLOR = new Color(255, 250, 252);
-            INVALID = new Color(255, 220, 220);
-            INVALID_BORDER = new Color(190, 90, 110);
+            BACKGROUND = new Color(188, 207, 188);
+            TEXT_COLOR = new Color(38, 58, 42);
+            PANEL_BACKGROUND = new Color(160, 185, 162);
+            FIELD_COLOR = new Color(211, 225, 210);
+            INVALID = new Color(232, 186, 186);
+            INVALID_BORDER = new Color(172, 78, 78);
             applyTheme.run();
         });
 
-        
+        navyTheme.addActionListener(e -> {
+            BACKGROUND = new Color(16, 24, 39);
+            TEXT_COLOR = new Color(230, 237, 247);
+            PANEL_BACKGROUND = new Color(29, 42, 64);
+            FIELD_COLOR = new Color(38, 56, 82);
+            INVALID = new Color(74, 32, 40);
+            INVALID_BORDER = new Color(193, 99, 112);
+            applyTheme.run();
+        });
 
+        lightTheme.addActionListener(e -> {
+            BACKGROUND = new Color(244, 241, 232);
+            TEXT_COLOR = new Color(52, 52, 48);
+            PANEL_BACKGROUND = new Color(229, 224, 212);
+            FIELD_COLOR = new Color(255, 253, 247);
+            INVALID = new Color(245, 218, 218);
+            INVALID_BORDER = new Color(183, 90, 90);
+            applyTheme.run();
+        });
+        
         mainFrame.setJMenuBar(mainMenuBar);
+        mainFrame.add(balancePanel);
 
         // confirm Button action (needs to be after mainFrame created due to mainFrame needing to open once pressed)
 
