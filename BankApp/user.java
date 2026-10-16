@@ -30,7 +30,6 @@ public class user {
 
         String id = generateID(temp, name, surname);
 
-
     }
 
 }

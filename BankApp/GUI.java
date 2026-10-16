@@ -7,16 +7,25 @@ public class GUI {
 
     // Color Scheme
 
-    private static final Color BACKGROUND = new Color(30, 30, 30);
-    private static final Color TEXT_COLOR = new Color(255, 255, 255);
-    private static final Color PANEL_BACKGROUND = new Color(50, 50, 50);
-    private static final Color FIELD_COLOR = new Color(70, 70, 70);
-    private static final Color INVALID = new Color(40, 0, 0);
-    private static final Color INVALID_BORDER = new Color(60, 0, 0);
+    private static Color BACKGROUND = new Color(30, 30, 30);
+    private static Color TEXT_COLOR = new Color(255, 255, 255);
+    private static Color PANEL_BACKGROUND = new Color(50, 50, 50);
+    private static Color FIELD_COLOR = new Color(70, 70, 70);
+    private static Color INVALID = new Color(40, 0, 0);
+    private static Color INVALID_BORDER = new Color(60, 0, 0);
+    private static final String NAME_PLACEHOLDER = "Enter Name..";
+    private static final String SURNAME_PLACEHOLDER = "Enter Surname..";
+    private static final String PASS_PLACEHOLDER = "Enter Password..";
+
+    public static boolean validate(String input, String placeholder) {
+        return (!input.isBlank() && !input.equals(placeholder));
+    }
     
     public static void renderGUI() {
 
         Toolkit tk = Toolkit.getDefaultToolkit();
+
+        // Sign Up / Login Menu
 
         JFrame signUp = new JFrame();
         signUp.setLayout(null);
@@ -24,6 +33,7 @@ public class GUI {
         signUp.setUndecorated(true);
         signUp.getContentPane().setBackground(BACKGROUND);
         signUp.setLocationRelativeTo(null);
+        signUp.setAutoRequestFocus(true);
 
         JMenuBar singUpBar = new JMenuBar();
         singUpBar.setOpaque(true);
@@ -46,14 +56,8 @@ public class GUI {
 
         signUp.setJMenuBar(singUpBar);
 
-        JFrame mainFrame = new JFrame();
-        mainFrame.setSize(tk.getScreenSize());
-        mainFrame.setUndecorated(true);
-        mainFrame.getContentPane().setBackground(BACKGROUND);
-        mainFrame.setResizable(false);
-        mainFrame.setAutoRequestFocus(true);
-
         JPanel signUpPanel = new JPanel(new GridBagLayout()); 
+        signUpPanel.setFocusable(true);
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(5,5,5,5);
 
@@ -63,7 +67,7 @@ public class GUI {
             350, 250
         );
 
-        JTextField name = new JTextField(10);
+        JTextField name = new JTextField(NAME_PLACEHOLDER, 10);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -77,12 +81,15 @@ public class GUI {
             public void focusGained(FocusEvent e) {
                 name.setBackground(FIELD_COLOR);
                 name.setBorder(BorderFactory.createEmptyBorder());
+                if (name.getText().equals(NAME_PLACEHOLDER)) {
+                    name.setText("");
+                }
             }
         });
 
         signUpPanel.add(name, c);
 
-        JTextField surname = new JTextField(10);
+        JTextField surname = new JTextField(SURNAME_PLACEHOLDER, 10);
 
         c.gridx = 1;
         c.gridy = 0;
@@ -90,18 +97,22 @@ public class GUI {
 
         surname.setBackground(FIELD_COLOR);
         surname.setForeground(TEXT_COLOR);
+        surname.setBorder(BorderFactory.createEmptyBorder());
 
         surname.addFocusListener(new FocusAdapter() {
             @Override 
             public void focusGained(FocusEvent e) {
                 surname.setBackground(FIELD_COLOR);
                 surname.setBorder(BorderFactory.createEmptyBorder());
+                if (surname.getText().equals(SURNAME_PLACEHOLDER)) {
+                    surname.setText("");
+                }
             }
         });
 
         signUpPanel.add(surname, c);
 
-        JTextField password = new JTextField(20);
+        JTextField password = new JTextField(PASS_PLACEHOLDER, 20);
         
         c.gridx = 0;
         c.gridy = 1;
@@ -111,16 +122,21 @@ public class GUI {
         
         password.setBackground(FIELD_COLOR);
         password.setForeground(TEXT_COLOR);
+        password.setBorder(BorderFactory.createEmptyBorder());
 
         password.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 password.setBackground(FIELD_COLOR);
                 password.setBorder(BorderFactory.createEmptyBorder());
+                if (password.getText().equals(PASS_PLACEHOLDER)) {
+                    password.setText("");
+                }
             }
         });
 
         signUpPanel.add(password, c);
+        SwingUtilities.invokeLater(signUpPanel::requestFocusInWindow);
 
 
         JButton confirm = new JButton("Confirm");
@@ -137,31 +153,126 @@ public class GUI {
         signUpPanel.add(confirm, c);
         confirm.setBorder(BorderFactory.createLineBorder(FIELD_COLOR));
 
+        // Main App
+
+        JFrame mainFrame = new JFrame();
+        mainFrame.setSize(tk.getScreenSize());
+        mainFrame.setUndecorated(true);
+        mainFrame.getContentPane().setBackground(BACKGROUND);
+        mainFrame.setResizable(false);
+        mainFrame.setAutoRequestFocus(true);
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JMenuBar mainMenuBar = new JMenuBar();
+        mainMenuBar.setBackground(BACKGROUND);
+        mainMenuBar.setForeground(TEXT_COLOR);
+        mainMenuBar.setBorder(BorderFactory.createEmptyBorder());
+
+        JMenu optionsMenu = new JMenu("Options");
+        optionsMenu.setBackground(PANEL_BACKGROUND);
+        optionsMenu.setForeground(TEXT_COLOR);
+        mainMenuBar.add(optionsMenu);
+
+        JMenuItem mainClose = new JMenuItem("Close");
+        mainClose.setBackground(PANEL_BACKGROUND);
+        mainClose.setForeground(TEXT_COLOR);
+        optionsMenu.add(mainClose);
+
+        mainClose.addActionListener(e -> {
+            mainFrame.dispose();
+        }); 
+
+        JMenu themesMenu = new JMenu("Themes");
+        themesMenu.setBackground(PANEL_BACKGROUND);
+        themesMenu.setForeground(TEXT_COLOR);
+        mainMenuBar.add(themesMenu);
+
+        JMenuItem darkTheme = new JMenuItem("Dark");
+        darkTheme.setBackground(PANEL_BACKGROUND);
+        darkTheme.setForeground(TEXT_COLOR);
+        themesMenu.add(darkTheme);
+
+        JMenuItem pastelTheme = new JMenuItem("Pastel");
+        pastelTheme.setBackground(PANEL_BACKGROUND);
+        pastelTheme.setForeground(TEXT_COLOR);
+        themesMenu.add(pastelTheme);
+
+        JMenuItem navyTheme = new JMenuItem("Navy");
+        navyTheme.setBackground(PANEL_BACKGROUND);
+        pastelTheme.setForeground(TEXT_COLOR);
+        themesMenu.add(navyTheme);
+
+        Runnable applyTheme = () -> {
+            mainFrame.getContentPane().setBackground(BACKGROUND);
+            mainMenuBar.setBackground(BACKGROUND);
+            mainMenuBar.setForeground(TEXT_COLOR);
+            optionsMenu.setBackground(PANEL_BACKGROUND);
+            optionsMenu.setForeground(TEXT_COLOR);
+            themesMenu.setBackground(PANEL_BACKGROUND);
+            themesMenu.setForeground(TEXT_COLOR);
+            mainClose.setBackground(PANEL_BACKGROUND);
+            mainClose.setForeground(TEXT_COLOR);
+            darkTheme.setBackground(PANEL_BACKGROUND);
+            darkTheme.setForeground(TEXT_COLOR);
+            pastelTheme.setBackground(PANEL_BACKGROUND);
+            pastelTheme.setForeground(TEXT_COLOR);
+        };
+
+        darkTheme.addActionListener(e -> {
+            BACKGROUND = new Color(30, 30, 30);
+            TEXT_COLOR = new Color(255, 255, 255);
+            PANEL_BACKGROUND = new Color(50, 50, 50);
+            FIELD_COLOR = new Color(70, 70, 70);
+            INVALID = new Color(40, 0, 0);
+            INVALID_BORDER = new Color(120, 30, 30);
+            applyTheme.run();
+        });
+
+        pastelTheme.addActionListener(e -> {
+            BACKGROUND = new Color(250, 240, 245);
+            TEXT_COLOR = new Color(68, 52, 63);
+            PANEL_BACKGROUND = new Color(238, 218, 229);
+            FIELD_COLOR = new Color(255, 250, 252);
+            INVALID = new Color(255, 220, 220);
+            INVALID_BORDER = new Color(190, 90, 110);
+            applyTheme.run();
+        });
+
+        
+
+        mainFrame.setJMenuBar(mainMenuBar);
+
+        // confirm Button action (needs to be after mainFrame created due to mainFrame needing to open once pressed)
+
         confirm.addActionListener(e -> {
-            if (! name.getText().isBlank() && ! surname.getText().isBlank() && ! password.getText().isBlank()){
+            if (validate(name.getText(), NAME_PLACEHOLDER) && validate(surname.getText(), SURNAME_PLACEHOLDER) && validate(password.getText(), PASS_PLACEHOLDER)) { // check if all fields have been filled
                 signUp.dispose();
                 mainFrame.setVisible(true);
             }
             else {
-                if (name.getText().isBlank()) {
+                if (!validate(name.getText(), NAME_PLACEHOLDER)) {
                     name.setBackground(INVALID);
                     name.setBorder(BorderFactory.createLineBorder(INVALID_BORDER));
                 }
-                if (surname.getText().isBlank()) {
+                if (!validate(surname.getText(), SURNAME_PLACEHOLDER)) {
                     surname.setBackground(INVALID);
                     surname.setBorder(BorderFactory.createLineBorder(INVALID_BORDER));
                 }
-                if (password.getText().isBlank()) {
+                if (!validate(password.getText(), PASS_PLACEHOLDER)) {
                     password.setBackground(INVALID);
                     password.setBorder(BorderFactory.createLineBorder(INVALID_BORDER));
                 }
             }
         });
 
-        signUpPanel.setBackground(PANEL_BACKGROUND);
 
+        // Make Signup visible
+        signUpPanel.setBackground(PANEL_BACKGROUND);
         signUp.add(signUpPanel);
         signUp.setVisible(true);
+
+
+
     }
 
     public static void main(String[] args) {
