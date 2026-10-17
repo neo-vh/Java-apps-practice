@@ -1,7 +1,10 @@
 import javax.swing.*;
+
 import java.awt.*;
 //import java.util.*;
 import java.awt.event.*;
+
+import com.sun.source.doctree.TextTree;
 
 public class GUI {
 
@@ -215,9 +218,26 @@ public class GUI {
 
         balancePanel.setBounds(
             (mainFrame.getWidth() - 400) / 2,
-            (mainFrame.getHeight() - 100) / 2,
+            (mainFrame.getHeight() - 800) / 2,
             400, 100
         );
+
+        JLabel welcomeLabel = new JLabel("Welcome, ");
+        welcomeLabel.setForeground(TEXT_COLOR);
+        welcomeLabel.setFont(new Font("Consolas", Font.PLAIN, 30));
+        
+        mainFrame.add(welcomeLabel);
+        welcomeLabel.setBounds(
+            ((mainFrame.getWidth() - 400) + welcomeLabel.getText().length()) / 2,
+            (mainFrame.getHeight() - 1000) / 2,
+            400, 100
+        );
+
+        JLabel balance = new JLabel("R0");
+        balance.setForeground(TEXT_COLOR);
+        // set text to current balance after retrieving account data
+        balance.setFont(new Font("Consolas", Font.PLAIN, 24));
+        balancePanel.add(balance);
 
         // main frame components should be placed above this comment
 
