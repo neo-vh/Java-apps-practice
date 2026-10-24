@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -16,7 +17,7 @@ public class GUI {
     private static Color BORDER_COLOR = new Color(51, 65, 85);
 
     enum PromptStyles {
-        WORDS, LETTERS
+        WORDS, LETTERS, CODE
     }
 
     JFrame instance = null;
@@ -64,10 +65,20 @@ public class GUI {
         promptStyle.setForeground(TEXT_COLOR);
         menuBar.add(promptStyle);
 
-        JMenuItem style = new JMenuItem("Change Style (word/letters)");
-        style.setBackground(PANEL_BACKGROUND);
-        style.setForeground(TEXT_COLOR);
-        promptStyle.add(style);
+        JMenuItem words = new JMenuItem("Words");
+        words.setBackground(PANEL_BACKGROUND);
+        words.setForeground(TEXT_COLOR);
+        promptStyle.add(words);
+
+        JMenuItem letters = new JMenuItem("Letters");
+        letters.setBackground(PANEL_BACKGROUND);
+        letters.setForeground(TEXT_COLOR);
+        promptStyle.add(letters);
+
+        JMenuItem code = new JMenuItem("Code");
+        code.setForeground(TEXT_COLOR);
+        code.setBackground(PANEL_BACKGROUND);
+        promptStyle.add(code);
 
         JMenu windowStyles = new JMenu("Themes");
         windowStyles.setBackground(BACKGROUND);
@@ -89,14 +100,21 @@ public class GUI {
         darkTheme.setForeground(TEXT_COLOR);
         windowStyles.add(darkTheme);
 
-        style.addActionListener(e -> {
+        words.addActionListener(e -> {
             
-            if (states.currentStyle == PromptStyles.WORDS) {
-                states.currentStyle = PromptStyles.LETTERS;
-            }
-            else {
-                states.currentStyle = PromptStyles.WORDS;
-            }
+            states.currentStyle = PromptStyles.WORDS;
+
+        });
+
+        letters.addActionListener(e -> {
+
+            states.currentStyle = PromptStyles.LETTERS;
+
+        });
+
+        code.addActionListener(e -> {
+
+            states.currentStyle = PromptStyles.CODE;
 
         });
 
@@ -145,7 +163,7 @@ public class GUI {
             }
 
             for (JMenuItem item : new JMenuItem[] {
-                close, style, navyTheme, lightTheme, darkTheme
+                close, words, navyTheme, lightTheme, darkTheme
             }) {
                 item.setOpaque(true);
                 item.setBackground(PANEL_BACKGROUND);
@@ -230,11 +248,22 @@ public class GUI {
                     double wpm = (targetString.length() / 5.0) / elpasedMinutes;
                     double accuracy = (targetString.length() * 100.0) / states.totalTyped;
 
-                    if (states.currentStyle == PromptStyles.WORDS) {
-                        targetString = prompts.randomWords(4);
-                    }
-                    else if (states.currentStyle == PromptStyles.LETTERS) {
-                        targetString = prompts.randomLetters(4, 4);
+                    switch (states.currentStyle) {
+                        case PromptStyles.LETTERS -> {
+                            targetString = prompts.randomLetters(4, 4);
+                        }
+
+                        case PromptStyles.CODE -> {
+                            targetString = prompts.randomCode(4);
+                        }
+
+                        case PromptStyles.WORDS -> {
+                            targetString = prompts.randomWords(4);
+                        }
+
+                        default -> {
+                            targetString = prompts.randomWords(typed);
+                        }
                     }
 
                     textPane.setText(targetString);

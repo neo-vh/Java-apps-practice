@@ -1,5 +1,7 @@
 import java.util.*;
 
+import javax.naming.spi.DirStateFactory;
+
 public class prompts {
 
     static String[] possibleWords = {
@@ -15,6 +17,18 @@ public class prompts {
             'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
             'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
             'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'
+    };
+
+    static String[] possibleCode = {
+            "public", "private", "protected", "static", "final", "class", "interface",
+            "void", "int", "long", "double", "boolean", "char", "String", "new",
+            "return", "if", "else", "switch", "case", "for", "while", "do",
+            "break", "continue", "try", "catch", "finally", "throw", "throws",
+            "import", "package", "extends", "implements", "this", "super",
+            "true", "false", "null", "var", "instanceof",
+            "{", "}", "(", ")", "[", "]", ";", ",", ".", ":", "?",
+            "=", "==", "!=", "<", ">", "<=", ">=", "+", "-", "*", "/", "%",
+            "++", "--", "+=", "-=", "&&", "||", "!", "&", "|", "->", "::"
     };
 
     public static String randomWords(int length) {
@@ -43,6 +57,20 @@ public class prompts {
         }
 
         return result.strip();
+    }
+
+    public static String randomCode(int length) {
+
+        Random r = new Random();
+
+        String result = new String();
+
+        for (int i = 0; i < length; i++) {
+            result = String.format("%s %s", result, possibleCode[r.nextInt(possibleCode.length)]);
+        }
+
+        return result.strip();
+
     }
 
 }
