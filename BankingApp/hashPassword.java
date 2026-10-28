@@ -7,6 +7,7 @@ import javax.crypto.spec.*;
 public class hashPassword {
     
     final String PASS;
+    final int hashIterations = 10000;
 
     public hashPassword(String password) {
         this.PASS = password;
@@ -21,7 +22,7 @@ public class hashPassword {
 
         String hashEncoded = runPdkdf2(saltBytes, PASS);
 
-        return saltEncoded + ":" + hashEncoded;
+        return saltEncoded + ":" + hashEncoded + ':' + hashIterations;
     }
 
     public boolean verify(String loginAttempt, String stored) {
@@ -34,7 +35,7 @@ public class hashPassword {
 
             String newHash = runPdkdf2(saltBytes, loginAttempt);
 
-            return newHash.equals(hashEncoded);
+            return MessageDigest.isEqual(Base64.getDecoder().decode(newHash), Base64.getDecoder().decode(hashEncoded));
 
         } catch (Exception e) {
 
@@ -45,7 +46,7 @@ public class hashPassword {
 
     private String runPdkdf2(byte[] saltBytes, String password) {
 
-        int iterations = 10000;
+        int iterations = hashIterations;
         int keyLength = 256;
 
         PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, iterations, keyLength);
