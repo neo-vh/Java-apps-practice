@@ -2,12 +2,19 @@ import juanparser.*;
 
 public class addUserEntry {
 
-    String final USER_NAME;
-    String final PASSWORD;
-    String final 
+    final String USER;
+    final String PASS;
+    final int START_BALANCE = 100;
 
-    public void addUserEntry(String name, String password) {
+    public addUserEntry(String name, String password) {
+
+        this.USER = name;
+        this.PASS = password;
 
     }
+
+
+    public 
+
 
 }
