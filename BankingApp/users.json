@@ -1,6 +1,11 @@
 {
-    "0f78a485-b356-4684-a50f-a628904f8c75":{
-        "password":"r3F69YFnQIx5MlwSNAjuPA==:WTC0oaBxJdrZ9idH+osSv1wNyRYYGIslMIS3wEWNDVs=:10000",
+    "96c0b27e-a329-498b-b636-8172f20fb3cf":{
+        "password":"q558M5HAfph/cx22iKJ9ug==:Tk2RR9603MMab3IYVqcN3q6Jmcg2cVW0VfS9dYedGA4=:10000",
+        "balance":100,
+        "name":"Neo"
+    },
+    "ec6847be-63e1-4ad9-b051-4401a7b00810":{
+        "password":"z24sHq7vW7LC2hPfBDIj+A==:Z/1xreWHoVtlpbOumCWPzITwmz4gbj4ath5umZGXQGc=:10000",
         "balance":100,
         "name":"Neo"
     }

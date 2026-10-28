@@ -40,7 +40,28 @@ public class userUtils {
         JsonRead helper = new JsonRead(HELPER, true);
         Map<String, Object> oldHelperContent = helper.fromJson();
 
-        oldHelperContent.put(USER, uuid);
+        if (!(oldHelperContent.containsKey(USER))) { // Username is unique (key does not exist yet)
+
+            oldHelperContent.put(USER, uuid);
+
+        } else {
+
+            if (oldHelperContent.get(USER) instanceof String existingUser) {
+
+                List<Object> userList  = new ArrayList<>();
+                userList.add(existingUser);
+                userList.add(uuid);
+                oldHelperContent.put(USER, userList);
+
+            } else if (oldHelperContent.get(USER) instanceof List<?> existingUsers) {
+
+                List<Object> userList = new ArrayList<>(existingUsers);
+                userList.add(uuid);
+                oldHelperContent.put(USER, userList);
+
+            }
+
+        }
 
         // convert to hashmaps for jsonwrite
         HashMap<String, Object> newUsersContent = new HashMap<>(oldUsersContent);
@@ -50,6 +71,7 @@ public class userUtils {
 
             JsonWrite.writes(newUsersContent, USERS);
             JsonWrite.writes(newHelperContent, HELPER);
+
         } catch (IOException e) {
 
             System.out.println("unable to write new user " + e);
