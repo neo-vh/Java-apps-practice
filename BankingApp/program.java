@@ -1,8 +1,14 @@
+
 public class program {
     
     public static void main(String[] args) {
-        userUtils user = new userUtils("Neo", "hello123");
-        user.newUser();
+
+        userUtils getUser = new userUtils("mama", "password123");
+        System.out.println(getUser.getUser());
+
+        getUser = new userUtils("Neo", "neoiscool123");
+        System.out.println(getUser.getUser());
+
     }
 
 }

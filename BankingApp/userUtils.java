@@ -1,4 +1,5 @@
 import java.io.*;
+import java.nio.file.attribute.UserDefinedFileAttributeView;
 import java.util.*;
 import juanparser.*;
 
@@ -12,19 +13,76 @@ public class userUtils {
 
     public userUtils(String name, String password) { // having password as required may be an issue keep in mind
 
+
         this.USER = name;
         this.PASS = password;
 
     }
 
+    public String getUser() { // grab a user's uuid by username and verify with password
+
+        String finalUUID = new String();
+        JsonRead readHelper = new JsonRead(HELPER, true);
+        Map<String, Object> helperContent = new HashMap<>(readHelper.fromJson());
+        JsonRead readUsers = new JsonRead(USERS, true);
+        Map<String, Object> usersContents = new HashMap<>(readUsers.fromJson());
+        List<?> targetUserName = new ArrayList<>();
+
+
+        if (helperContent.get(USER) instanceof String || helperContent.get(USER) instanceof List<?>) { // check if the contents are a string or a list (return a list of contents)
+
+            if (helperContent.get(USER) instanceof String) {
+                targetUserName = List.of(helperContent.get(USER));
+            } else if (helperContent.get(USER) instanceof List<?>) {
+                targetUserName = (List<?>) helperContent.get(USER);
+            }
+
+        } else {
+
+            return "FAILED";
+
+        }
+
+        for (Object uuid : targetUserName) {
+
+            if (!(uuid instanceof String stringUUID)) continue;
+
+            if (!(usersContents.get(stringUUID) instanceof Map<?, ?> mappedUserInformation)) continue;
+
+            if (mappedUserInformation.containsKey("password")) {
+                
+                hashPassword checkLogin = new hashPassword(PASS); // get the loginAttempt and match to the current UUID password
+                
+                if (checkLogin.verify((String) mappedUserInformation.get("password"))) { // if passwords match 
+
+                    finalUUID = stringUUID;
+
+                }  else {
+
+                    continue;
+
+                }
+
+            } else {
+                continue;
+            }
+
+
+        }
+
+
+        return finalUUID;
+
+    }
+
     public void newUser() { // store UUID and matching password name and balance in Users and store UUID and name in helper
 
-        hashPassword encrypt = new hashPassword(PASS);
         String uuid = UUID.randomUUID().toString();
 
         // create the map containing the user info
 
         Map<String, Object> user = new HashMap<>();
+        hashPassword encrypt = new hashPassword(PASS);
 
         user.put("name", USER);
         user.put("password", encrypt.getHashed());

@@ -25,7 +25,7 @@ public class hashPassword {
         return saltEncoded + ":" + hashEncoded + ':' + hashIterations;
     }
 
-    public boolean verify(String loginAttempt, String stored) {
+    public boolean verify(String stored) {
         try {
             String[] parts = stored.split(":");
             String saltEncoded = parts[0];
@@ -33,7 +33,7 @@ public class hashPassword {
 
             byte[] saltBytes = Base64.getDecoder().decode(saltEncoded);
 
-            String newHash = runPdkdf2(saltBytes, loginAttempt);
+            String newHash = runPdkdf2(saltBytes, PASS);
 
             return MessageDigest.isEqual(Base64.getDecoder().decode(newHash), Base64.getDecoder().decode(hashEncoded));
 

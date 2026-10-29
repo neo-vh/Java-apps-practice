@@ -6,7 +6,6 @@ if not exist "out" mkdir out
 javac -d out -cp "..\lib\juanparser.jar" *.java
 
 if errorlevel 1 (
-    echo.
     echo Compile failed.
     exit /b 1
 )
